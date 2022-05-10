@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 const generatePage = require('./src/page-template');
 
 const promptUser = () => {
+  const { projects, about, ...header } =templateData;
   return inquirer.prompt([
     {
       type: 'input',
@@ -126,14 +127,4 @@ Add a New Project
     });
 };
 
-promptUser()
-  .then(promptProject)
-  .then(portfolioData => {
-    console.log(portfolioData);
-    // will be uncommented in lesson 4
-    // const pageHTML = generatePage(portfolioData);
-    // fs.writeFile('./index.html', pageHTML, err => {
-    //   if (err) throw new Error(err);
-    //   console.log('Page created! Check out index.html in this directory to see it!');
-    // });
-  });
+const pageHTML = generatePage(mockData);
