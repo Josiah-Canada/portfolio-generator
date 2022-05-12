@@ -1,6 +1,17 @@
-const fs = require('fs');
+const generateSite = require('./utils/generate-site.js');
 const inquirer = require('inquirer');
 const generatePage = require('./src/page-template');
+const { writeFile, copyFile } = require('./utils/generate-site.js');
+  console.log('Page created! Check out index.html in this directory to see it!');
+
+  fs.copyFile('./src/style.css', './dist/style.css', err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log('Style sheet copied successfully!');
+  });
+});
 
 const promptUser = () => {
   const { projects, about, ...header } =templateData;
@@ -45,6 +56,25 @@ const promptUser = () => {
     }
   ]);
 };
+
+promptUser()
+  .then(promptProject)
+  .then(portfolioData => {
+    return generatePage(portfolioData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 const promptProject = portfolioData => {
   console.log(`
